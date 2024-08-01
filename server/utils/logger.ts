@@ -1,9 +1,9 @@
 // more descriptive logging functions
-const info = (...params) => {
+const info = (...params: string[]): void => {
   console.log(...params);
 };
 
-const error = (...params) => {
+const error = (...params: string[]): void => {
   console.error(...params);
 };
 
