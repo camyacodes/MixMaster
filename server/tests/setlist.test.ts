@@ -9,3 +9,6 @@
 
 // songs can be updated
 // put song
+
+// users can create a setlist
+// post setlist
