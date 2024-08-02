@@ -23,7 +23,7 @@ describe("A user", () => {
     await initialUser.save();
   });
 
-  test("should successfully be created with hashed password and fresh username", async () => {
+  test("should successfully be created a fresh username", async () => {
     const usersBefore = await usersInDB();
     // save user to db
     let savedUser = {
@@ -40,12 +40,16 @@ describe("A user", () => {
       .expect("Content-Type", /application\/json/);
 
     const usersAfter = await usersInDB();
+    const usernames = usersAfter.map((u) => u.username);
 
     // expect db size to increase
     expect(usersAfter.length).toEqual(usersBefore.length + 1);
+
+    expect(usernames).toContain("djBill76");
+    // check for username in database
   });
 
-  test.only("creation fails with proper statuscode and message if username already taken", async () => {
+  test("creation fails with proper statuscode and message if username already taken", async () => {
     const usersBefore = await usersInDB();
 
     let dupUser = {
@@ -60,7 +64,6 @@ describe("A user", () => {
       .send(dupUser)
       .expect(400)
       .expect("Content-Type", /application\/json/);
-    // console.log(result);
 
     const usersAfter = await usersInDB();
 
