@@ -11,8 +11,8 @@ export const dbConnect = async () => {
   }
   mongoose.set("strictQuery", false);
 
-  let dev_uri = process.env.MONGODB_URI;
-  let test_uri = process.env.MONGO_URI;
+  const dev_uri = process.env.MONGODB_URI;
+  const test_uri = process.env.MONGO_URI;
 
   try {
     if (process.env.NODE_ENV === "test") {

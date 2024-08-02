@@ -1,11 +1,30 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import supertest = require("supertest");
+import bcrypt from "bcrypt";
 import app from "../app";
+import User from "../models/user";
+import { usersInDB } from "./test_helpers";
 
 const api = supertest(app);
 
 describe("A user", () => {
-  test("should successfully be created", async () => {
+  beforeEach(async () => {
+    await User.deleteMany({});
+
+    const passwordHash = await bcrypt.hash("sekret", 10);
+
+    const initialUser = new User({
+      name: "Alice Johnson",
+      username: "alicej",
+      email: "alicej@example.com",
+      passwordHash,
+    });
+
+    await initialUser.save();
+  });
+  test("should successfully be created with hashed password and fresh username", async () => {
+    const usersBefore = await usersInDB();
+    // save user to db
     let savedUser = {
       name: "Bill",
       username: "djBill76",
@@ -18,45 +37,12 @@ describe("A user", () => {
       .send(savedUser)
       .expect(201)
       .expect("Content-Type", /application\/json/);
+
+    const usersAfter = await usersInDB();
+
+    // expect db size to increase
+    expect(usersAfter.length).toEqual(usersBefore.length + 1);
   });
+
+  test("creation fails with proper statuscode and message if username already taken", async () => {});
 });
-
-// @ts-nocheck
-// import request from "supertest";
-// import { Response } from "supertest";
-
-// // before all start server and seed db
-// // after all close server
-
-// // users can be created
-// // post user
-
-// describe("A user can be", () => {
-//   test("created", async () => {
-//     const newUser = {
-//       username: "MyaB",
-//       password: "abc123",
-//     };
-
-//     const response: Response = await request(app)
-//       .post("/users")
-//       .send(newUser)
-//       .set("Accept", "application/json")
-//       .expect("Content-Type", /json/)
-//       .expect(200);
-
-//     const usersAtEnd = helper.usersInDB;
-//     expect(userAtEnd.length).toStrictEqual(usersAtStart.length + 1);
-//   });
-// });
-
-// // users can login in
-// // post user
-
-// // users can logout
-// // put user
-
-// // users can create a setlist
-// // post setlist
-
-// // delete setlist
