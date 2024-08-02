@@ -22,6 +22,7 @@ describe("A user", () => {
 
     await initialUser.save();
   });
+
   test("should successfully be created with hashed password and fresh username", async () => {
     const usersBefore = await usersInDB();
     // save user to db
@@ -44,5 +45,26 @@ describe("A user", () => {
     expect(usersAfter.length).toEqual(usersBefore.length + 1);
   });
 
-  test("creation fails with proper statuscode and message if username already taken", async () => {});
+  test.only("creation fails with proper statuscode and message if username already taken", async () => {
+    const usersBefore = await usersInDB();
+
+    let dupUser = {
+      name: "Alice Johnson",
+      username: "alicej",
+      email: "alicej@example.com",
+      password: "123abc",
+    };
+
+    const result = await api
+      .post("/api/user")
+      .send(dupUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+    // console.log(result);
+
+    const usersAfter = await usersInDB();
+
+    expect(result.body.error).toEqual("username already taken");
+    expect(usersAfter.length).toEqual(usersBefore.length);
+  });
 });
