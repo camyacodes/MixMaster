@@ -11,9 +11,16 @@ export const dbConnect = async () => {
   }
   mongoose.set("strictQuery", false);
 
+  let dev_uri = process.env.MONGODB_URI;
+  let test_uri = process.env.MONGO_URI;
+
   try {
-    await mongoose.connect(`${process.env.MONGODB_URI}`);
-    console.log("Successfully connected to MongoDB!");
+    if (process.env.NODE_ENV === "test") {
+      await mongoose.connect(`${test_uri}`);
+    } else if (process.env.NODE_ENV === "development") {
+      await mongoose.connect(`${dev_uri}`);
+      console.log("Successfully connected to production MongoDB!");
+    }
     isConnected = true;
   } catch (error) {
     console.error(error);
