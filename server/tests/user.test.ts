@@ -1,54 +1,23 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { model, Schema } from "mongoose";
-// import { MongoMemoryServer } from "mongodb-memory-server";
+import supertest = require("supertest");
+import app from "../app";
 
-// 1. Create an interface representing a document in MongoDB.
-interface IUser {
-  name: string;
-  email: string;
-  avatar?: string;
-}
+const api = supertest(app);
 
-// 2. Create a Schema corresponding to the document interface.
-const userSchema = new Schema<IUser>({
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  avatar: String,
-});
-
-// 3. Create a Model.
-const User = model<IUser>("User", userSchema);
-
-// This is an Example test, do not merge it with others and do not delete this file
-
-describe("Single MongoMemoryServer", () => {
-  // let con: Mongoose;
-  // let mongoServer: MongoMemoryServer;
-
-  // beforeAll(async () => {
-  //   mongoServer = await MongoMemoryServer.create();
-  //   con = await mongoose.connect(mongoServer.getUri(), {});
-  //   console.log(mongoServer.getUri());
-  // });
-
-  // afterAll(async () => {
-  //   if (con) {
-  //     con.disconnect();
-  //   }
-  //   if (mongoServer) {
-  //     await mongoServer.stop();
-  //   }
-  // });
-
-  it("should successfully set & get information from the database", async () => {
-    const user = new User({
+describe("A user", () => {
+  test("should successfully be created", async () => {
+    let savedUser = {
       name: "Bill",
+      username: "djBill76",
       email: "bill@initech.com",
-      avatar: "https://i.imgur.com/dM7Thhn.png",
-    });
-    await user.save();
-    console.log(user);
-    expect(user.email).toBe("bill@initech.com");
+      password: "123abc",
+    };
+
+    await api
+      .post("/api/user")
+      .send(savedUser)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
   });
 });
 

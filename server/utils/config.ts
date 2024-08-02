@@ -1,17 +1,21 @@
 import dotenv from "dotenv";
 dotenv.config();
 import mongoose from "mongoose";
-import { MongoMemoryServer } from "mongodb-memory-server";
 
-export const PORT = process.env.PORT;
-
-// let con: Mongoose;
-let mongoServer: MongoMemoryServer;
+export const PORT = process.env.PORT || 3001;
+let isConnected = false;
 
 export const dbConnect = async () => {
-  mongoServer = await MongoMemoryServer.create();
-  await mongoose.connect(mongoServer.getUri(), {});
-  console.log(mongoServer.getUri());
-};
+  if (isConnected) {
+    return;
+  }
+  mongoose.set("strictQuery", false);
 
-// export default { PORT, dbConnect };
+  try {
+    await mongoose.connect(`${process.env.MONGODB_URI}`);
+    console.log("Successfully connected to MongoDB!");
+    isConnected = true;
+  } catch (error) {
+    console.error(error);
+  }
+};
