@@ -34,7 +34,7 @@ describe("A user", () => {
     };
 
     await api
-      .post("/api/user")
+      .post("/api/users")
       .send(savedUser)
       .expect(201)
       .expect("Content-Type", /application\/json/);
@@ -60,7 +60,7 @@ describe("A user", () => {
     };
 
     const result = await api
-      .post("/api/user")
+      .post("/api/users")
       .send(dupUser)
       .expect(400)
       .expect("Content-Type", /application\/json/);
