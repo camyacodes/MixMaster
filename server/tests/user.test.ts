@@ -7,7 +7,7 @@ import { usersInDB } from "./test_helpers";
 
 const api = supertest(app);
 
-describe("A user", () => {
+describe("Creating a user", () => {
   beforeEach(async () => {
     await User.deleteMany({});
 
@@ -23,7 +23,7 @@ describe("A user", () => {
     await initialUser.save();
   });
 
-  test("should successfully be created a fresh username", async () => {
+  test("should be sucessful with a fresh username", async () => {
     const usersBefore = await usersInDB();
     // save user to db
     let savedUser = {
@@ -49,7 +49,7 @@ describe("A user", () => {
     // check for username in database
   });
 
-  test("creation fails with proper statuscode and message if username already taken", async () => {
+  test("should fail if username already exists", async () => {
     const usersBefore = await usersInDB();
 
     let dupUser = {
@@ -68,6 +68,24 @@ describe("A user", () => {
     const usersAfter = await usersInDB();
 
     expect(result.body.error).toEqual("username already taken");
+    expect(usersAfter.length).toEqual(usersBefore.length);
+  });
+  test.only("should fail if email, name, or username is missing", async () => {
+    const usersBefore = await usersInDB();
+
+    const user = {
+      email: "mymy@gmail.com",
+      password: "abc123",
+    };
+
+    await api
+      .post("/api/users")
+      .send(user)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    const usersAfter = await usersInDB();
+
     expect(usersAfter.length).toEqual(usersBefore.length);
   });
 });
