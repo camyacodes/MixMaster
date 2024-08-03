@@ -1,0 +1,6 @@
+PUT http://localhost:3001/api/setlists/66adbdcb5c6c17aa88102f1
+Content-Type: application/json
+
+{
+    "name": "song3"
+}

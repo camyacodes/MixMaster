@@ -70,7 +70,7 @@ describe("Creating a user", () => {
     expect(result.body.error).toEqual("username already taken");
     expect(usersAfter.length).toEqual(usersBefore.length);
   });
-  test.only("should fail if email, name, or username is missing", async () => {
+  test("should fail if email, name, or username is missing", async () => {
     const usersBefore = await usersInDB();
 
     const user = {

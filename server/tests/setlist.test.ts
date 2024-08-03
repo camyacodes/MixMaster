@@ -5,18 +5,20 @@ import SetList from "../models/setlist";
 import { initialSetlist, setlistsInDB, mockSet } from "./test_helpers";
 
 const api = supertest(app);
+
+let initialSetId = "";
 beforeEach(async () => {
   await SetList.deleteMany({});
 
   const firstSetlist = new SetList(initialSetlist);
 
   await firstSetlist.save();
-
+  initialSetId = firstSetlist.id;
   console.log("Setlist seeded");
 });
 
-describe("a setlist", () => {
-  test("can be created", async () => {
+describe("creating a setlist", () => {
+  test("suceeds with the correct data", async () => {
     const setsBefore = await setlistsInDB();
 
     const setlist = mockSet;
@@ -31,6 +33,43 @@ describe("a setlist", () => {
 
     expect(setsAfter.length).toEqual(setsBefore.length + 1);
     expect(setsAfter[1].name).toContain("Electronic Essentials");
+  });
+
+  test("fails with amissing name", async () => {
+    const setsBefore = await setlistsInDB();
+
+    const setlist = {};
+
+    await api.post("/api/setlists").send(setlist).expect(400);
+
+    const setsAfter = await setlistsInDB();
+
+    expect(setsAfter.length).toEqual(setsBefore.length);
+  });
+});
+
+describe("songs can be", () => {
+  test.only("added to a setlist", async () => {
+    console.log("set id", initialSetId);
+    const setlistBefore = await SetList.findById(initialSetId);
+
+    const song = {
+      name: "Woo",
+      intro_bpm: 95,
+      outro_bpm: 100,
+      transition: "fade",
+    };
+
+    await api
+      .put(`/api/setlists/${initialSetId}`)
+      .send(song)
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
+
+    const setlistAfter = await SetList.findById(initialSetId);
+
+    expect(setlistAfter?.songs.length).toEqual(setlistBefore!.songs.length + 1);
+    expect(setlistAfter?.songs[setlistAfter.songs.length - 1].name).toBe("Woo");
   });
 });
 // songs can be removed

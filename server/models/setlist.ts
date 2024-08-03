@@ -15,14 +15,14 @@ interface SetList {
 }
 
 const songSchema = new Schema<Song>({
-  name: { type: String, require: true },
+  name: { type: String, required: true },
   intro_bpm: Number,
   outro_bpm: Number,
   transition: String,
 });
 
 const setlistSchema = new Schema<SetList>({
-  name: { type: String, require: true },
+  name: { type: String, required: true },
   songs: [songSchema],
   userId: { type: mongoose.SchemaTypes.ObjectId, ref: User },
 });
