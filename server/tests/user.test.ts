@@ -7,22 +7,22 @@ import { usersInDB } from "./test_helpers";
 
 const api = supertest(app);
 
-describe("Creating a user", () => {
-  beforeEach(async () => {
-    await User.deleteMany({});
+beforeEach(async () => {
+  await User.deleteMany({});
 
-    const passwordHash = await bcrypt.hash("sekret", 10);
+  const passwordHash = await bcrypt.hash("sekret", 10);
 
-    const initialUser = new User({
-      name: "Alice Johnson",
-      username: "alicej",
-      email: "alicej@example.com",
-      passwordHash,
-    });
-
-    await initialUser.save();
+  const initialUser = new User({
+    name: "Alice Johnson",
+    username: "alicej",
+    email: "alicej@example.com",
+    passwordHash,
   });
 
+  await initialUser.save();
+});
+
+describe("Creating a user", () => {
   test("should be sucessful with a fresh username", async () => {
     const usersBefore = await usersInDB();
     // save user to db
@@ -87,5 +87,21 @@ describe("Creating a user", () => {
     const usersAfter = await usersInDB();
 
     expect(usersAfter.length).toEqual(usersBefore.length);
+  });
+});
+describe("logging in a user", () => {
+  test.only("should succeed with a token", async () => {
+    const user = {
+      username: "alicej",
+      password: "sekret",
+    };
+
+    const loginUser = await api
+      .post("/api/login")
+      .send(user)
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
+
+    expect(loginUser.body.token).toBeDefined();
   });
 });

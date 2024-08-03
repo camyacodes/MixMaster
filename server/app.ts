@@ -6,6 +6,7 @@ import userRouter from "./routes/user";
 import setlistRouter from "./routes/setlist";
 import { dbConnect } from "./utils/config";
 import middleware from "./utils/middleware";
+import loginRouter from "./routes/login";
 const app = express();
 
 app.use(cors());
@@ -19,6 +20,7 @@ app.get("/", (_req, res) => {
 
 app.use("/api/users", userRouter);
 app.use("/api/setlists", setlistRouter);
+app.use("/api/login", loginRouter);
 
 app.use(middleware.errorHandler);
 

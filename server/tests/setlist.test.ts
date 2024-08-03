@@ -49,7 +49,7 @@ describe("creating a setlist", () => {
 });
 
 describe("songs can be", () => {
-  test.only("added to a setlist", async () => {
+  test("added to a setlist", async () => {
     console.log("set id", initialSetId);
     const setlistBefore = await SetList.findById(initialSetId);
 
