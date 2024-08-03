@@ -53,12 +53,20 @@ describe("songs can be", () => {
     console.log("set id", initialSetId);
     const setlistBefore = await SetList.findById(initialSetId);
 
-    const song = {
-      name: "Woo",
-      intro_bpm: 95,
-      outro_bpm: 100,
-      transition: "fade",
-    };
+    const song = [
+      {
+        name: "Woo",
+        intro_bpm: 95,
+        outro_bpm: 100,
+        transition: "fade",
+      },
+      {
+        name: "Umbrella",
+        intro_bpm: 75,
+        outro_bpm: 170,
+        transition: "echo out",
+      },
+    ];
 
     await api
       .put(`/api/setlists/${initialSetId}`)
@@ -68,15 +76,19 @@ describe("songs can be", () => {
 
     const setlistAfter = await SetList.findById(initialSetId);
 
-    expect(setlistAfter?.songs.length).toEqual(setlistBefore!.songs.length + 1);
-    expect(setlistAfter?.songs[setlistAfter.songs.length - 1].name).toBe("Woo");
+    expect(setlistAfter?.songs.length).toEqual(
+      setlistBefore!.songs.length + song.length
+    );
+    expect(setlistAfter?.songs[setlistAfter.songs.length - 1].name).toBe(
+      "Umbrella"
+    );
   });
 });
 // songs can be removed
 // delete song
 
 // songs can be added
-// post song
+// put song
 
 // songs can be reorganized
 // put setlist

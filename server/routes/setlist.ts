@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
-  const song = req.body;
+  const songs = req.body;
 
   const setlist = await SetList.findById(id);
 
@@ -27,7 +27,7 @@ router.put("/:id", async (req, res) => {
     return res.status(404).json({ error: "setlist not found" });
   }
 
-  setlist.songs = setlist?.songs.concat(song);
+  setlist.songs = setlist?.songs.concat(songs);
 
   const results = await setlist.save();
 
