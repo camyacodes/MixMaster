@@ -84,17 +84,3 @@ describe("songs can be", () => {
     );
   });
 });
-// songs can be removed
-// delete song
-
-// songs can be added
-// put song
-
-// songs can be reorganized
-// put setlist
-
-// songs can be updated
-// put song
-
-// users can create a setlist
-// post setlist
