@@ -90,7 +90,7 @@ describe("Creating a user", () => {
   });
 });
 describe("logging in a user", () => {
-  test.only("should succeed with a token", async () => {
+  test("should succeed with a token", async () => {
     const user = {
       username: "alicej",
       password: "sekret",

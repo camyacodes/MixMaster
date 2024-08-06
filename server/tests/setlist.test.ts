@@ -35,7 +35,7 @@ describe("creating a setlist", () => {
     expect(setsAfter[1].name).toContain("Electronic Essentials");
   });
 
-  test("fails with amissing name", async () => {
+  test("fails with a missing name", async () => {
     const setsBefore = await setlistsInDB();
 
     const setlist = {};
