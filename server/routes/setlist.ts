@@ -3,7 +3,6 @@ import SetList from "../models/setlist";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import User from "../models/user";
 import { Response } from "express-serve-static-core";
-import { AnyKeys, AnyObject } from "mongoose";
 
 const router = express.Router();
 
@@ -64,20 +63,9 @@ router.put("/:id", async (req, res) => {
   if (!setlist) {
     return res.status(404).json({ error: "setlist not found" });
   }
+  // Add each song to the songs array using Mongoose's push method
+  songs.forEach((song: (typeof setlist.songs)[0]) => setlist.songs.push(song));
 
-  songs.map(
-    (
-      song: AnyKeys<{
-        name: string;
-        intro_bpm?: number | null | undefined;
-        outro_bpm?: number | null | undefined;
-        transition?: string | null | undefined;
-      }> &
-        AnyObject
-    ) => {
-      return setlist.songs.push(song);
-    }
-  );
   console.log("new setlist", JSON.stringify(setlist, null, 2));
 
   const results = await setlist.save();

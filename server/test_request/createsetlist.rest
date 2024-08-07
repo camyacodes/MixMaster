@@ -1,6 +1,7 @@
 POST http://localhost:3001/api/setlists
 Content-Type: application/json
+"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp1aWN5Ym9pIiwiaWQiOiI2NmIzZDlkOWNkZWZiMjhkMjlkN2QwOTAiLCJpYXQiOjE3MjMwNjI4ODIsImV4cCI6MTcyMzA2NjQ4Mn0.UVdkR_0NvXAyOgIwfEsWEQqw8fw8V4GEqVTEPjA6ZcA"
 
 {
-    "name": "set1"
+    "name": "BBQ"
 }

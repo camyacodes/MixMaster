@@ -1,6 +1,15 @@
-PUT http://localhost:3001/api/setlists/66adbdcb5c6c17aa88102f1
+PUT http://localhost:3001/api/setlists/66b3dbeecdefb28d29d7d095
 Content-Type: application/json
 
-{
-    "name": "song3"
-}
+  [{
+        "name": "Umbrella",
+        "intro_bpm": 75,
+        "outro_bpm": 170,
+        "transition": "echo out"
+      },
+      {
+        "name": "Single Ladies",
+        "intro_bpm": 56,
+        "outro_bpm": 78,
+        "transition": "fade"
+      }]
