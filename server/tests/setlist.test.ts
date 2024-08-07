@@ -13,14 +13,16 @@ import {
 const api = supertest(app);
 
 let initialSetId = "";
-// let testUserId = "";
+
+// Runs before each test to reset the setlist and user collections and add initial data
 beforeEach(async () => {
-  // create set and user
   await SetList.deleteMany({});
   await User.deleteMany({});
 
+  // Create a password hash for the initial user
   const passwordHash = await bcrypt.hash("sekret", 10);
 
+  // Create and save the initial user in the database
   const initialUser = new User({
     name: "Joe Johnson",
     username: "joej",
@@ -29,9 +31,9 @@ beforeEach(async () => {
   });
 
   await initialUser.save();
-  // testUserId = initialUser.id;
   console.log("User seeded");
 
+  // Create and save the initial setlist in the database
   const firstSetlist = new SetList(initialSetlist);
 
   await firstSetlist.save();
@@ -39,67 +41,64 @@ beforeEach(async () => {
   console.log("Setlist seeded");
 });
 
-describe("creating a setlist", () => {
-  test("suceeds with the correct data and user logged in", async () => {
-    const setsBefore = await setlistsInDB();
+describe("Creating a setlist", () => {
+  test("succeeds with the correct data and user logged in", async () => {
+    const setsBefore = await setlistsInDB(); // Get the list of setlists before the test
 
-    const setlist = emptySet;
-    // logged in user
-    // api call to login with user
-    //get token
+    const setlist = emptySet; // Define an empty setlist
+
+    // Log in the user to get a token
     const user = await api
       .post("/api/login")
       .send({ username: "joej", password: "sekret" })
-      .expect(200)
-      .expect("Content-Type", /application\/json/);
+      .expect(200) // Expect a 200 OK status code
+      .expect("Content-Type", /application\/json/); // Expect the response to be in JSON format
 
-    const token = user.body.token;
+    const token = user.body.token; // Extract the token from the response
 
-    // console.log(config);
-    // console.log("token for creating setlist", token);
-    // add token to request body
+    // Send a POST request to create a new setlist with the token
     const results = await api
       .post("/api/setlists")
-      .set("Authorization", "Bearer " + token)
+      .set("Authorization", "Bearer " + token) // Set the Authorization header with the token
       .send(setlist)
-      .expect(201)
-      .expect("Content-Type", /application\/json/);
+      .expect(201) // Expect a 201 Created status code
+      .expect("Content-Type", /application\/json/); // Expect the response to be in JSON format
 
-    const setsAfter = await setlistsInDB();
+    const setsAfter = await setlistsInDB(); // Get the list of setlists after the test
 
-    // console.log(
-    //   "setlist user id",
-    //   results.body.user,
-    //   "Actual user id",
-    //   user.body.id
-    // );
+    // Check that the number of setlists has increased by one
     expect(setsAfter.length).toEqual(setsBefore.length + 1);
+
+    // Check that the new setlist has the correct name and user ID
     expect(setsAfter[1].name).toContain("first setlist");
     expect(results.body.user).toContain(user.body.id);
   });
 
-  test("fails with out user logged in", async () => {
-    const setsBefore = await setlistsInDB();
+  test("fails without user logged in", async () => {
+    const setsBefore = await setlistsInDB(); // Get the list of setlists before the test
 
-    const setlist = mockSet;
+    const setlist = mockSet; // Define a mock setlist
 
+    // Send a POST request to create a new setlist without a token
     await api
       .post("/api/setlists")
-      .set("Authorization", "")
+      .set("Authorization", "") // No token provided
       .send(setlist)
-      .expect(401)
-      .expect("Content-Type", /application\/json/);
-    const setsAfter = await setlistsInDB();
+      .expect(401) // Expect a 401 Unauthorized status code
+      .expect("Content-Type", /application\/json/); // Expect the response to be in JSON format
 
+    const setsAfter = await setlistsInDB(); // Get the list of setlists after the test
+
+    // Check that no new setlist was added
     expect(setsAfter.length).toEqual(setsBefore.length);
   });
 });
 
-describe("songs can be", () => {
+describe("Songs can be", () => {
   test("added to a setlist", async () => {
-    // console.log("set id", initialSetId);
-    const setlistBefore = await SetList.findById(initialSetId);
+    const setlistBefore = await SetList.findById(initialSetId); // Get the setlist before adding songs
 
+    // Define songs to be added to the setlist
     const song = [
       {
         name: "Woo",
@@ -115,19 +114,18 @@ describe("songs can be", () => {
       },
     ];
 
+    // Send a PUT request to add songs to the setlist
     await api
       .put(`/api/setlists/${initialSetId}`)
       .send(song)
-      .expect(200)
-      .expect("Content-Type", /application\/json/);
+      .expect(200) // Expect a 200 OK status code
+      .expect("Content-Type", /application\/json/); // Expect the response to be in JSON format
 
-    const setlistAfter = await SetList.findById(initialSetId);
+    const setlistAfter = await SetList.findById(initialSetId); // Get the setlist after adding songs
 
+    // Check that the number of songs in the setlist has increased by the number of songs added
     expect(setlistAfter?.songs.length).toEqual(
       setlistBefore!.songs.length + song.length
     );
-    // expect(setlistAfter?.songs[setlistAfter.songs.length - 1].name).toBe(
-    //   "Umbrella"
-    // );
   });
 });
