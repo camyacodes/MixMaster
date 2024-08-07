@@ -1,12 +1,12 @@
-import { model, Schema } from "mongoose";
-// import { MongoMemoryServer } from "mongodb-memory-server";
+import mongoose, { model, Schema, Types } from "mongoose";
 
 // 1. Create an interface representing a document in MongoDB.
 interface IUser {
-  name: string;
-  username: string;
-  email: string;
+  name: String;
+  username: String;
+  email: String;
   passwordHash: string;
+  setlists: Types.ObjectId[];
 }
 
 // 2. Create a Schema corresponding to the document interface.
@@ -15,6 +15,7 @@ const userSchema = new Schema<IUser>({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true },
   passwordHash: { type: String, required: true },
+  setlists: [{ type: mongoose.SchemaTypes.ObjectId, ref: "SetList" }],
 });
 
 userSchema.set("toJSON", {

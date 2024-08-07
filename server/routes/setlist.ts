@@ -17,7 +17,7 @@ const getTokenFrom = (
     return response.status(401).json({ error: "User not logged in" });
   }
 };
-
+// create set
 router.post("/", async (req, res) => {
   const body = req.body;
 
@@ -35,15 +35,17 @@ router.post("/", async (req, res) => {
     return res.status(401).json({ error: "user not found in system" });
   }
 
-  const createdSetlist = new SetList({
+  // console.log("setlist create user", user._id);
+
+  const Setlist = new SetList({
     name: body.name,
-    songs: body.songs,
-    user: user.id,
+    user: user._id,
   });
 
-  await createdSetlist.save();
-
-  return res.status(201).json(createdSetlist);
+  const newSetlist = await Setlist.save();
+  user.setlists = user.setlists.concat(newSetlist._id);
+  await user.save();
+  return res.status(201).json(Setlist);
 });
 
 router.put("/:id", async (req, res) => {

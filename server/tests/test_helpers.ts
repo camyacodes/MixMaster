@@ -1,6 +1,10 @@
 import User from "../models/user";
 import SetList from "../models/setlist";
 
+export const emptySet = {
+  name: "first setlist",
+};
+
 export const initialSetlist = {
   name: "My DJ Setlist",
   songs: [

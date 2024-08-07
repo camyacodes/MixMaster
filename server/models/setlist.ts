@@ -1,5 +1,4 @@
-import mongoose, { model, Schema } from "mongoose";
-import User from "./user";
+import mongoose, { model, Schema, Types } from "mongoose";
 
 interface Song {
   name: String;
@@ -11,7 +10,7 @@ interface Song {
 interface SetList {
   name: String;
   songs: Song[];
-  userId: String;
+  user: Types.ObjectId[];
 }
 
 const songSchema = new Schema<Song>({
@@ -24,7 +23,7 @@ const songSchema = new Schema<Song>({
 const setlistSchema = new Schema<SetList>({
   name: { type: String, required: true },
   songs: [songSchema],
-  userId: { type: mongoose.SchemaTypes.ObjectId, ref: User },
+  user: [{ type: mongoose.SchemaTypes.ObjectId, ref: "User " }],
 });
 
 setlistSchema.set("toJSON", {

@@ -3,7 +3,12 @@ import app from "../app";
 import bcrypt from "bcrypt";
 import User from "../models/user";
 import SetList from "../models/setlist";
-import { initialSetlist, mockSet, setlistsInDB } from "./test_helpers";
+import {
+  initialSetlist,
+  mockSet,
+  setlistsInDB,
+  emptySet,
+} from "./test_helpers";
 
 const api = supertest(app);
 
@@ -44,7 +49,7 @@ describe("creating a setlist", () => {
   test("suceeds with the correct data and user logged in", async () => {
     const setsBefore = await setlistsInDB();
 
-    const setlist = mockSet;
+    const setlist = emptySet;
     // logged in user
     // api call to login with user
     //get token
@@ -59,7 +64,7 @@ describe("creating a setlist", () => {
     // console.log(config);
     // console.log("token for creating setlist", token);
     // add token to request body
-    await api
+    const results = await api
       .post("/api/setlists")
       .set("Authorization", "Bearer " + token)
       .send(setlist)
@@ -68,8 +73,15 @@ describe("creating a setlist", () => {
 
     const setsAfter = await setlistsInDB();
 
+    console.log(
+      "setlist user id",
+      results.body.user,
+      "Actual user id",
+      user.body.id
+    );
     expect(setsAfter.length).toEqual(setsBefore.length + 1);
-    expect(setsAfter[1].name).toContain("Electronic Essentials");
+    expect(setsAfter[1].name).toContain("first setlist");
+    expect(results.body.user).toContain(user.body.id);
   });
 
   test("fails with out user logged in", async () => {
