@@ -11,6 +11,8 @@ loginRouter.post("/", async (req: Request, res: Response) => {
   //   user is found in the db by username field
   const user = await User.findOne({ username });
 
+  // console.log(user);
+
   //check if password is correct using bcrypt
   const passwordCorrect =
     user === null ? false : await bcrypt.compare(password, user.passwordHash);

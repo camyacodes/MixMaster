@@ -3,7 +3,7 @@ import supertest = require("supertest");
 import bcrypt from "bcrypt";
 import app from "../app";
 import User from "../models/user";
-import { usersInDB } from "./test_helpers";
+import { initialSetlist, usersInDB } from "./test_helpers";
 
 const api = supertest(app);
 
@@ -103,5 +103,37 @@ describe("logging in a user", () => {
       .expect("Content-Type", /application\/json/);
 
     expect(loginUser.body.token).toBeDefined();
+  });
+
+  describe("Getting a users setlists", () => {
+    test("suceeds with a valid user id in req", async () => {
+      const setlist = initialSetlist;
+      const user = await api
+        .post("/api/login")
+        .send({ username: "alicej", password: "sekret" })
+        .expect(200)
+        .expect("Content-Type", /application\/json/);
+
+      const token = user.body.token;
+
+      // console.log(config);
+      // console.log("token for creating setlist", token);
+      // add token to request body
+      await api
+        .post("/api/setlists")
+        .set("Authorization", "Bearer " + token)
+        .send(setlist)
+        .expect(201)
+        .expect("Content-Type", /application\/json/);
+
+      // get req with user id param
+      // return all setlists that user has
+      const userSets = await api
+        .get(`/api/users/${user.body.id}`)
+        .expect(200)
+        .expect("Content-Type", /application\/json/);
+
+      expect(userSets.body.setlists[0].name).toContain("My DJ Setlist");
+    });
   });
 });

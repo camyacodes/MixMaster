@@ -3,6 +3,7 @@ import SetList from "../models/setlist";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import User from "../models/user";
 import { Response } from "express-serve-static-core";
+import { AnyKeys, AnyObject } from "mongoose";
 
 const router = express.Router();
 
@@ -31,6 +32,7 @@ router.post("/", async (req, res) => {
     return res.status(401).json({ error: "token invalid" });
   }
   const user = await User.findById(decodedToken.id);
+  // console.log("created set user", user);
   if (!user) {
     return res.status(401).json({ error: "user not found in system" });
   }
@@ -39,26 +41,44 @@ router.post("/", async (req, res) => {
 
   const Setlist = new SetList({
     name: body.name,
+    songs: body.songs,
     user: user._id,
   });
 
   const newSetlist = await Setlist.save();
+  // console.log("New set created", newSetlist);
   user.setlists = user.setlists.concat(newSetlist._id);
   await user.save();
+  // console.log("updated user", updatedUser);
   return res.status(201).json(Setlist);
 });
 
 router.put("/:id", async (req, res) => {
-  const { id } = req.params;
   const songs = req.body;
 
-  const setlist = await SetList.findById(id);
+  console.log("sent songs", songs);
+
+  const setlist = await SetList.findById(req.params.id);
+  // console.log("found setlist", setlist);
 
   if (!setlist) {
     return res.status(404).json({ error: "setlist not found" });
   }
 
-  setlist.songs = setlist?.songs.concat(songs);
+  songs.map(
+    (
+      song: AnyKeys<{
+        name: string;
+        intro_bpm?: number | null | undefined;
+        outro_bpm?: number | null | undefined;
+        transition?: string | null | undefined;
+      }> &
+        AnyObject
+    ) => {
+      return setlist.songs.push(song);
+    }
+  );
+  console.log("new setlist", JSON.stringify(setlist, null, 2));
 
   const results = await setlist.save();
 
