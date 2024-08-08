@@ -1,0 +1,1 @@
+DELETE http://localhost:3001/api/setlists/66b4149a118c33be099532a6

@@ -73,4 +73,17 @@ router.put("/:id", async (req, res) => {
   return res.status(200).json(results);
 });
 
+// Delete a setlist from setlists and users setlists
+router.delete("/:id", async (req, res) => {
+  await SetList.findByIdAndDelete(req.params.id);
+  // const setDeleteUser = await User.findById(setToDelete?.user);
+
+  await User.updateMany(
+    { setlists: req.params.id },
+    { $pull: { setlists: req.params.id } }
+  );
+
+  res.status(204).end();
+});
+
 export default router;

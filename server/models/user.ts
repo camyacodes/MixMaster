@@ -1,16 +1,16 @@
-import mongoose, { model, Schema, Types } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 
 // 1. Create an interface representing a document in MongoDB.
-interface IUser {
-  name: String;
-  username: String;
-  email: String;
-  passwordHash: string;
-  setlists: Types.ObjectId[];
-}
+// interface IUser {
+//   name: String;
+//   username: String;
+//   email: String;
+//   passwordHash: string;
+//   setlists: Types.ObjectId[];
+// }
 
 // 2. Create a Schema corresponding to the document interface.
-const userSchema = new Schema<IUser>({
+const userSchema = new Schema({
   name: { type: String, required: true },
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true },
@@ -28,6 +28,6 @@ userSchema.set("toJSON", {
 });
 
 // 3. Create a Model.
-const User = model<IUser>("User", userSchema);
+const User = model("User", userSchema);
 
 export default User;
