@@ -4,7 +4,7 @@ import SignUp from './components/SignUpForm'
 function App() {
   return (
     <>
-      <SignUp />
+      <SignUp handleSubmit={handleSignup} />
     </>
   )
 }

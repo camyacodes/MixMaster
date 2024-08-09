@@ -10,6 +10,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { useState } from 'react'
 
 function Copyright(props: object) {
   return (
@@ -32,8 +33,13 @@ function Copyright(props: object) {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme()
 
-const SignUp = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+const SignUp = ({ handleSubmit }) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+
+  const handleSignup = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     console.log({
@@ -78,6 +84,9 @@ const SignUp = () => {
                   id='name'
                   label='Stage Name'
                   autoFocus
+                  onChange={({ target }) => {
+                    setName(target.value)
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -88,6 +97,9 @@ const SignUp = () => {
                   label='Username'
                   name='username'
                   autoComplete='username'
+                  onChange={({ target }) => {
+                    setUsername(target.value)
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -98,6 +110,9 @@ const SignUp = () => {
                   label='Email Address'
                   name='email'
                   autoComplete='email'
+                  onChange={({ target }) => {
+                    setEmail(target.value)
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -109,6 +124,9 @@ const SignUp = () => {
                   type='password'
                   id='password'
                   autoComplete='new-password'
+                  onChange={({ target }) => {
+                    setPassword(target.value)
+                  }}
                 />
               </Grid>
               <Grid item xs={12}></Grid>
