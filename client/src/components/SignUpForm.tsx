@@ -10,7 +10,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { useState } from 'react'
+// import { useState } from 'react'
+import { NewUser } from '../types'
 
 function Copyright(props: object) {
   return (
@@ -30,24 +31,25 @@ function Copyright(props: object) {
   )
 }
 
+type SignupProps = {
+  handleSubmit: (arg0: NewUser) => Promise<NewUser>
+}
+
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme()
 
-const SignUp = ({ handleSubmit }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-
+const SignUp = ({ handleSubmit }: SignupProps) => {
   const handleSignup = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    console.log({
-      name: data.get('name'),
-      username: data.get('username'),
-      email: data.get('email'),
-      password: data.get('password'),
-    })
+    const user = {
+      name: data.get('name') || '',
+      username: data.get('username') || '',
+      email: data.get('email') || '',
+      password: data.get('password') || '',
+    }
+
+    handleSubmit(user)
   }
 
   return (
@@ -71,7 +73,7 @@ const SignUp = ({ handleSubmit }) => {
           <Box
             component='form'
             noValidate
-            onSubmit={handleSubmit}
+            onSubmit={handleSignup}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
@@ -84,9 +86,6 @@ const SignUp = ({ handleSubmit }) => {
                   id='name'
                   label='Stage Name'
                   autoFocus
-                  onChange={({ target }) => {
-                    setName(target.value)
-                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -97,9 +96,6 @@ const SignUp = ({ handleSubmit }) => {
                   label='Username'
                   name='username'
                   autoComplete='username'
-                  onChange={({ target }) => {
-                    setUsername(target.value)
-                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -110,9 +106,6 @@ const SignUp = ({ handleSubmit }) => {
                   label='Email Address'
                   name='email'
                   autoComplete='email'
-                  onChange={({ target }) => {
-                    setEmail(target.value)
-                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -124,9 +117,6 @@ const SignUp = ({ handleSubmit }) => {
                   type='password'
                   id='password'
                   autoComplete='new-password'
-                  onChange={({ target }) => {
-                    setPassword(target.value)
-                  }}
                 />
               </Grid>
               <Grid item xs={12}></Grid>
