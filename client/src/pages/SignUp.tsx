@@ -11,7 +11,8 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 // import { useState } from 'react'
-import { NewUser } from '../types'
+// import { NewUser } from '../types'
+import { signup } from '../services/signup'
 
 function Copyright(props: object) {
   return (
@@ -31,15 +32,15 @@ function Copyright(props: object) {
   )
 }
 
-type SignupProps = {
-  handleSubmit: (arg0: NewUser) => Promise<NewUser>
-}
+// type SignupProps = {
+//   handleSubmit: (arg0: NewUser) => Promise<NewUser>
+// }
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme()
 
-const SignUp = ({ handleSubmit }: SignupProps) => {
-  const handleSignup = (event: React.FormEvent<HTMLFormElement>) => {
+const SignUp = () => {
+  const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     const user = {
@@ -47,8 +48,9 @@ const SignUp = ({ handleSubmit }: SignupProps) => {
       email: data.get('email') || '',
       password: data.get('password') || '',
     }
-
-    handleSubmit(user)
+    const newUser = await signup(user)
+    console.log(newUser)
+    return newUser
   }
 
   return (
@@ -120,7 +122,7 @@ const SignUp = ({ handleSubmit }: SignupProps) => {
             </Button>
             <Grid container justifyContent='flex-end'>
               <Grid item>
-                <Link href='#' variant='body2'>
+                <Link href='/login' variant='body2'>
                   Already have an account? Login
                 </Link>
               </Grid>

@@ -1,15 +1,10 @@
 // import axios
 import axios from 'axios'
-const baseUrl = '/api/login'
-
-interface Credentials {
-  data: { email: string; password: string }
-}
+const baseUrl = 'http://localhost:3001/api/login'
+import { Credentials } from '../types'
 
 // set login service
-const login = async (credentials: Credentials) => {
-  const response = await axios.post(baseUrl, credentials.data)
+export const login = async (credentials: Credentials) => {
+  const response = await axios.post(baseUrl, credentials)
   return response.data
 }
-
-export default { login }
