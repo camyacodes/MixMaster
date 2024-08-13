@@ -6,10 +6,10 @@ import User from "../models/user";
 
 loginRouter.post("/", async (req: Request, res: Response) => {
   // user submits username and password through login form
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
   //   user is found in the db by username field
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ email });
 
   // console.log(user);
 
@@ -20,13 +20,14 @@ loginRouter.post("/", async (req: Request, res: Response) => {
   // both username and password need to be correct
   if (!(user && passwordCorrect)) {
     return res.status(401).json({
-      error: "invalid username or password",
+      error: "invalid email or password",
     });
   }
 
   //  create user object that will be encoded in token
   const userForToken = {
-    username: user.username,
+    name: user.name,
+    email: user.email,
     id: user._id,
   };
 
@@ -37,9 +38,7 @@ loginRouter.post("/", async (req: Request, res: Response) => {
     expiresIn: 60 * 60,
   });
   // send token back with user info
-  return res
-    .status(200)
-    .send({ token, username: user.username, name: user.name, id: user._id });
+  return res.status(200).send({ token });
 });
 
 export default loginRouter;

@@ -17,7 +17,6 @@ beforeEach(async () => {
   // Create and save the initial user in the database
   const initialUser = new User({
     name: "Alice Johnson",
-    username: "alicej",
     email: "alicej@example.com",
     passwordHash,
   });
@@ -32,7 +31,6 @@ describe("Creating a user", () => {
     // Define a new user to be saved to the database
     let savedUser = {
       name: "Bill",
-      username: "djBill76",
       email: "bill@initech.com",
       password: "123abc",
     };
@@ -45,13 +43,13 @@ describe("Creating a user", () => {
       .expect("Content-Type", /application\/json/); // Expect the response to be in JSON format
 
     const usersAfter = await usersInDB(); // Get the list of users after the test
-    const usernames = usersAfter.map((u) => u.username); // Extract usernames from the list of users
+    const emails = usersAfter.map((u) => u.email); // Extract emails from the list of users
 
     // Check that the number of users has increased by one
     expect(usersAfter.length).toEqual(usersBefore.length + 1);
 
     // Check that the new username exists in the database
-    expect(usernames).toContain("djBill76");
+    expect(emails).toContain("djBill76");
   });
 
   test("should fail if username already exists", async () => {
@@ -79,7 +77,7 @@ describe("Creating a user", () => {
     expect(usersAfter.length).toEqual(usersBefore.length);
   });
 
-  test("should fail if email, name, or username is missing", async () => {
+  test("should fail if email, name, or password is missing", async () => {
     const usersBefore = await usersInDB(); // Get the list of users before the test
 
     // Define a user with missing fields

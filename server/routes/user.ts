@@ -22,14 +22,13 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { name, username, email, password } = req.body;
+  const { name, email, password } = req.body;
 
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
 
   const user = new User({
     name,
-    username,
     email,
     passwordHash,
   });

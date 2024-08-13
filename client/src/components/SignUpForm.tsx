@@ -44,7 +44,6 @@ const SignUp = ({ handleSubmit }: SignupProps) => {
     const data = new FormData(event.currentTarget)
     const user = {
       name: data.get('name') || '',
-      username: data.get('username') || '',
       email: data.get('email') || '',
       password: data.get('password') || '',
     }
@@ -77,7 +76,7 @@ const SignUp = ({ handleSubmit }: SignupProps) => {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   autoComplete='given-name'
                   name='name'
@@ -86,16 +85,6 @@ const SignUp = ({ handleSubmit }: SignupProps) => {
                   id='name'
                   label='Stage Name'
                   autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id='username'
-                  label='Username'
-                  name='username'
-                  autoComplete='username'
                 />
               </Grid>
               <Grid item xs={12}>
