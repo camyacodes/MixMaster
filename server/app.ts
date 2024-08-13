@@ -14,10 +14,6 @@ app.use(express.json());
 
 dbConnect();
 
-app.get("/", (_req, res) => {
-  res.send("Heloooooooo");
-});
-
 app.use("/api/users", userRouter);
 app.use("/api/setlists", setlistRouter);
 app.use("/api/login", loginRouter);

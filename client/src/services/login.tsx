@@ -3,7 +3,7 @@ import axios from 'axios'
 const baseUrl = '/api/login'
 
 interface Credentials {
-  data: { username: string; password: string }
+  data: { email: string; password: string }
 }
 
 // set login service
