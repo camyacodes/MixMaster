@@ -117,17 +117,21 @@ const Task = ({ task, index }: { task: TTask; index: number }) => {
   return (
     <Draggable draggableId={`id-${task.id}`} index={index}>
       {(provided) => (
-        <Container
-          {...provided.dragHandleProps}
-          {...provided.draggableProps}
-          ref={provided.innerRef}
-        >
+        <Container {...provided.draggableProps} ref={provided.innerRef}>
+          <Handle {...provided.dragHandleProps} />
           {task.content}
         </Container>
       )}
     </Draggable>
   )
 }
+
+const Handle = styled.div`
+  width: 17px;
+  height: 17px;
+  marginright: 1px;
+  border: 1px solid black;
+`
 
 const Setlists = () => {
   const [todos, setTodos] = useState(initialData)
