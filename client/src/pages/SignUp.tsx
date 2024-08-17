@@ -14,24 +14,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 // import { NewUser } from '../types'
 import { signup } from '../services/signup'
 
-function Copyright(props: object) {
-  return (
-    <Typography
-      variant='body2'
-      color='text.secondary'
-      align='center'
-      {...props}
-    >
-      {'Copyright © '}
-      <Link color='inherit' href='https://mui.com/'>
-        Mix Master
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  )
-}
-
 // type SignupProps = {
 //   handleSubmit: (arg0: NewUser) => Promise<NewUser>
 // }
@@ -85,7 +67,7 @@ const SignUp = () => {
                   required
                   fullWidth
                   id='name'
-                  label='Stage Name'
+                  label='Name'
                   autoFocus
                 />
               </Grid>
@@ -129,7 +111,6 @@ const SignUp = () => {
             </Grid>
           </Box>
         </Box>
-        <Copyright />
       </Container>
     </ThemeProvider>
   )
