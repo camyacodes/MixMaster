@@ -18,7 +18,6 @@ import { signup } from '../services/signup'
 //   handleSubmit: (arg0: NewUser) => Promise<NewUser>
 // }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme()
 
 const SignUp = () => {

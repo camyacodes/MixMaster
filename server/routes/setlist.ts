@@ -17,6 +17,22 @@ const getTokenFrom = (
     return response.status(401).json({ error: "User not logged in" });
   }
 };
+
+// get setlists by user id
+router.get("/user/:id", async (req, res) => {
+  const user = await User.findById(req.params.id).populate({
+    path: "setlists",
+    populate: { path: "songs" },
+  });
+
+  // console.log("User with populated setlists:", JSON.stringify(user, null, 2));
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  return res.status(200).json(user);
+});
+
 // create set
 router.post("/", async (req, res) => {
   const body = req.body;

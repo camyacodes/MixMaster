@@ -1,7 +1,39 @@
 POST http://localhost:3001/api/setlists
 Content-Type: application/json
-"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp1aWN5Ym9pIiwiaWQiOiI2NmIzZDlkOWNkZWZiMjhkMjlkN2QwOTAiLCJpYXQiOjE3MjMwNzYwNjEsImV4cCI6MTcyMzA3OTY2MX0.lI2MGY22cQZ-a6Hw_HIL8uN2Lz8P_iWfjWRqVzVmutc"
+Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiREogQ2FtIiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiaWQiOiI2NmMxMzNhZjliY2MxNDRiZGM2MTgxZGEiLCJpYXQiOjE3MjM5MzgwNTEsImV4cCI6MTcyMzk0MTY1MX0.njMrl3O7YDy9CBMWExtP6sThT0aCPXr-IxEOmejaNAw"
 
 {
-    "name": "BBQ"
+  "name": "My DJ Setlist",
+  "songs": [
+    {
+      "name": "Song One",
+      "intro_bpm": 120,
+      "outro_bpm": 125,
+      "transition": "fade"
+    },
+    {
+      "name": "Song Two",
+      "intro_bpm": 125,
+      "outro_bpm": 130,
+      "transition": "cut"
+    },
+    {
+      "name": "Song Three",
+      "intro_bpm": 130,
+      "outro_bpm": 135,
+      "transition": "echo out"
+    },
+    {
+      "name": "Song Four",
+      "intro_bpm": 135,
+      "outro_bpm": 140,
+      "transition": "filter sweep"
+    },
+    {
+      "name": "Song Five",
+      "intro_bpm": 140,
+      "outro_bpm": 145,
+      "transition": "loop"
+    }
+  ]
 }
