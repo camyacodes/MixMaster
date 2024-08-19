@@ -10,7 +10,7 @@ export interface Credentials {
 }
 
 export interface ISetlist {
-  _id: string
+  id: string
   songs: ISong[]
   name: string
   user: string
