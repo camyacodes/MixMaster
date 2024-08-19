@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getUserSetlists } from '../services/setlists'
+import { getUserSetlists, updateSetlistSongs } from '../services/setlists'
 import { ISetlist } from '../types'
 import { DragDropContext, DropResult } from '@hello-pangea/dnd'
 import SetContainer from '../components/SetContainer'
@@ -13,7 +13,7 @@ const Setlists = () => {
     })
   }, [])
 
-  const HandleDropEnd = (result: DropResult) => {
+  const HandleDropEnd = async (result: DropResult) => {
     const { destination, source } = result
 
     if (!destination) {
@@ -39,7 +39,8 @@ const Setlists = () => {
       ...setlist,
       songs: newSongs,
     }
-    console.log(newSetlist)
+    setSetlist(newSetlist)
+    await updateSetlistSongs(newSetlist)
   }
   // console.log(typeof setlist?.id)
   return (

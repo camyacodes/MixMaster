@@ -80,7 +80,8 @@ router.put("/:id", async (req, res) => {
     return res.status(404).json({ error: "setlist not found" });
   }
   // Add each song to the songs array using Mongoose's push method
-  songs.forEach((song: (typeof setlist.songs)[0]) => setlist.songs.push(song));
+  // songs.forEach((song: (typeof setlist.songs)[0]) => setlist.songs.push(song));
+  setlist.songs = songs;
 
   console.log("new setlist", JSON.stringify(setlist, null, 2));
 
