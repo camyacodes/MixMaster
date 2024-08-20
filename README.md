@@ -31,7 +31,6 @@ Mix Master serves as an essential tool for DJs, offering a user-friendly interfa
 
 - [Project's Title](#mix-master)
 - [Project Description](#project-description)
-- [Table of Contents](#table-of-contents)
 - [How to Install and Run the Project](#how-to-install-and-run-the-project)
 - [How to Use the Project](#how-to-use-the-project)
 - [License](#license)
