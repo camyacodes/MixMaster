@@ -27,15 +27,6 @@ Mix Master serves as an essential tool for DJs, offering a user-friendly interfa
 - **Sharing Setlists:** Allowing users to share their setlists with others.
 - **Soundcloud API Integration:** Adding a powerful search feature to quickly find songs published on SoundCloud.
 
-## Table of Contents
-
-- [Project's Title](#mix-master)
-- [Project Description](#project-description)
-- [How to Install and Run the Project](#how-to-install-and-run-the-project)
-- [How to Use the Project](#how-to-use-the-project)
-- [License](#license)
-- [Tests](#tests)
-
 ## How to Install and Run the Project
 
 To run Mix Master locally, follow these steps:
